@@ -26,7 +26,7 @@ onMounted(() => {
   camera = obj.camera
   renderer = obj.renderer
   controls = obj.controls
-
+  camera.position.z = 0.1 //z轴正0.1 做全景效果
   // 让轨道控制器不能垂直看向地面
   controls.minPolarAngle = 0.25 * Math.PI
   // 限制轨道控制器的滚轮缩放

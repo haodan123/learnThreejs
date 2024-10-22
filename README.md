@@ -1,5 +1,8 @@
 # threejs day1
 
+==注意==
+因为视频太大无法上传到git 自己随便找几个链接替换就行
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup

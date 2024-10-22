@@ -1,10 +1,9 @@
 
 
 export default [
-
   {
     path: '/',
-    name: 'index1',
+    name: 'day1',
     component: () => import("@/layout/index.vue"),
     redirect: '/initThree',
     meta: { title: 'day1' },
@@ -13,7 +12,6 @@ export default [
         path: '/initThree',
         name: 'initThree',
         meta: { title: '初始化' },
-
         component: () => import("@/views/day1/initThree.vue"),
       },
       {
@@ -94,5 +92,61 @@ export default [
 
     ],
   },
+  {
+    path: '/day3',
+    name: 'day3',
+    component: () => import("@/layout/index.vue"),
+    redirect: '/aoTexture',
+    meta: { title: 'day3材质' },
+    children: [
+      {
+        path: '/aoTexture',
+        name: 'aoTexture',
+        meta: { title: '透明贴图 第二组uv' },
+
+        component: () => import("@/views/day3/aoTexture.vue"),
+      }, {
+        path: '/lambertMaterial',
+        name: 'lambertMaterial',
+        meta: { title: 'lambert材质' },
+
+        component: () => import("@/views/day3/lambertMaterial.vue"),
+      }, {
+        path: '/phongMaterial',
+        name: 'phongMaterial',
+        meta: { title: 'phong材质' },
+
+        component: () => import("@/views/day3/phongMaterial.vue"),
+      }, {
+        path: '/standardMaterial',
+        name: 'standardMaterial',
+        meta: { title: '标准材质' },
+
+        component: () => import("@/views/day3/standardMaterial.vue"),
+      }, {
+        path: '/standardCube',
+        name: 'standardCube',
+        meta: { title: '环境贴图' },
+        component: () => import("@/views/day3/standardCube.vue"),
+      },{
+        path: '/physicalMaterial',
+        name: 'physicalMaterial',
+        meta: { title: '物理材质' },
+        component: () => import("@/views/day3/physicalMaterial.vue"),
+      },{
+        path: '/initModel',
+        name: 'initModel',
+        meta: { title: '认识模型和使用' },
+        component: () => import("@/views/day3/initModel.vue"),
+      },{
+        path: '/initCoordinate',
+        name: 'initCoordinate',
+        meta: { title: '世界坐标系和模型坐标系' },
+        component: () => import("@/views/day3/initCoordinate.vue"),
+      },
+
+    ]
+  },
+
 
 ]

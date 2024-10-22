@@ -34,7 +34,8 @@ export const useThreeInit = (dom) => {
     scene = new THREE.Scene()
 
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
-    camera.position.z = 0.1 //z轴正0.1 做全景效果
+    // camera.position.z = 0.1 //z轴正0.1 做全景效果
+    camera.position.z = 5 //z轴正5 做正常效果
     renderer = new THREE.WebGLRenderer({ antialias: true }) //设置antialias为true就没有锯齿了
     renderer.setSize(width, height)
     // testBox.value.appendChild(renderer.domElement)
