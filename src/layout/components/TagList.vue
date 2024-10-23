@@ -229,7 +229,7 @@ const closeAllTags = () => {
   position: absolute;
   margin: 0;
   background-color: #fff;
-  z-index: 999;
+  z-index: 999 !important;
   padding: 5px 0;
   border-radius: 5px;
   font-size: 12px;

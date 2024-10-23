@@ -4,7 +4,7 @@
 
 <script setup>
 import * as THREE from 'three'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useThreeInit } from '@/composables'
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js' //辅助工具
 const testBox = ref()
@@ -14,6 +14,11 @@ let scene, camera, renderer
 let controls
 //调试工具
 let gui
+onUnmounted(() => {
+  if (gui) {
+    gui.domElement.remove() // 从 DOM 中移除 GUI 元素
+  }
+})
 
 onMounted(() => {
   const obj = useThreeInit(testBox.value)

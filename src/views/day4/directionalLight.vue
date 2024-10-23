@@ -4,7 +4,7 @@
 
 <script setup>
 import * as THREE from 'three'
-import { ref, onMounted,onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 // import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js' //css3d渲染器
 import { CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js' //css3d渲染器
 import { useThreeInit } from '@/composables'
@@ -19,7 +19,6 @@ let controls
 //调试工具
 let gui
 let cubeObj //立方体对象
-
 onUnmounted(() => {
   if (gui) {
     gui.domElement.remove() // 从 DOM 中移除 GUI 元素
@@ -33,36 +32,11 @@ onMounted(() => {
   renderer = obj.renderer
   controls = obj.controls
 
-  camera.position.z = 5
-  // 普通材质
-  // initMeshBasic()
-  // Lambert网格材质
-  // initLambert()
-  // Phong网格材质
-  // initPhong()
-  // 标准网格材质
-  // initStandard()
-  // 环境贴图网格材质
-  // initStandardCube()
-  // Physical物理网格材质
-  // initPhysical()
-  // 认识模型和使用
-  initModel()
+  camera.position.set(5, 5, 5)
+  // 创建地板
+  createFloor()
   // 光源
   createLight()
-  // 监听轨道控制器 旋转/拖拽等事件 方便找到驾驶位的坐标
-  controls.addEventListener('change', () => {
-    // console.log(camera.position) //摄像机的位置
-    // console.log(controls.target) //正在观察的坐标点对象
-  })
-
-  // 双击进入驾驶位
-  window.addEventListener('dblclick', e => {
-    // 在上面监听轨道控制的 方法中 找到定位复制过来
-    camera.position.set(0.37, 1.1, -0.62)
-    // 影响轨道控制器观察的目标位置（聚焦点）->影响摄像机查看的角度
-    controls.target = new THREE.Vector3(0.08, 0.52, 0.49)
-  })
 
   resizeRender()
 })
@@ -70,10 +44,27 @@ onMounted(() => {
 // 创建光源
 const createLight = () => {
   // 环境光：无方向，照亮场景中所有受光照影响的物体
-  const light = new THREE.AmbientLight(0xffffff, 1) // 柔和的白光
-  scene.add(light)
+  // 注意1：没有方向，不能投射阴影，只能照亮物体，但是没有光斑
+  // 注意2：金属度 1，粗糙度 0，无环境贴图时，放射颜色为黑色，物体自身为黑色并不是灯光的问题
+  // const light = new THREE.AmbientLight(0xffffff, 1) // 柔和的白光
+  // scene.add(light)
+  // 点光源（灯泡）
+  // 作用：从一个点向各个方向发射的光源，模拟灯泡发出的光，有方向可以投影和光斑
+  // 1. 创建 PointLight 点光源对象
+  // 2. 创建 PointLightHelper 辅助对象观察所在位置
+  // const light = new THREE.PointLight(0xffffff, 1, 100)
+  // light.position.set(3, 3, 3)
+  // scene.add(light)
+  // // 点光源的辅助对象
+  // const sphereSize = 1
+  // const pointLightHelper = new THREE.PointLightHelper(light, sphereSize)
+  // scene.add(pointLightHelper)
 
-  // 平行光：从一个方向发射过来平行光线
+  // 平行光（太阳光）
+  // 作用：沿着特定方向发射的光线。模拟太阳光，太阳足够远，因为我们认为太阳光是平行的。
+  // 步骤：
+  // 1. 创建 DirectionalLight 平行光对象，设置位置等添加到场景中
+  // 2. 创建 DirectionalLightHelper 平行光辅助对象（可选），辅助我们观察光源位置
   const directional = new THREE.DirectionalLight(0xffffff, 2) //颜色和光照强度
   // 设置光的位置
   directional.position.set(3, 3, 3)
@@ -85,29 +76,21 @@ const createLight = () => {
   scene.add(helper)
 }
 
-// 认识模型和使用
-const initModel = () => {
-  // 模型：包含网格，材质，贴图等信息的集合物体
-  // 模型文件：分为 .gltf, .glb, .fbx 等等类型
-  // 使用：借助 three.js 提供的 GLTFLoader 加载器可以加载 .gltf / .glb 模型文件，得到模型对象
+const createFloor = () => {
+  const geometry = new THREE.PlaneGeometry(10, 10)
 
-  const loader = new GLTFLoader()
-  loader.load('model/ferrari.glb', gltf => {
-    const model = gltf.scene
-    // model.position.set(-1, 1, 0)
-    // 遍历物体内部每个小物体组成
-    model.traverse(obj => {
-      console.log(obj)
-      if (obj.name === 'Object_3') {
-        // 车身
-        // 改变颜色
-        // obj.material.color = new THREE.Color('red')
-      }
-    })
-
-    // 把模型添加到场景中
-    scene.add(model)
+  // 使用标准网格材质
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    side: THREE.DoubleSide
+    // roughness: 1, // 粗糙度设置（0 光滑， 1 粗糙）
+    // metalness: 0 // 金属度（光反射的光泽程度，1 是最高）
   })
+  const plane = new THREE.Mesh(geometry, material)
+  // console.log(plane)
+  // plane.rotation.x = Math.PI
+  plane.rotation.x = -Math.PI / 2 //-的2分之π  就是旋转180度
+  scene.add(plane)
 }
 
 // 监听浏览器宽高

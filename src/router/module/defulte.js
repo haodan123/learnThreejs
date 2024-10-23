@@ -128,17 +128,17 @@ export default [
         name: 'standardCube',
         meta: { title: '环境贴图' },
         component: () => import("@/views/day3/standardCube.vue"),
-      },{
+      }, {
         path: '/physicalMaterial',
         name: 'physicalMaterial',
         meta: { title: '物理材质' },
         component: () => import("@/views/day3/physicalMaterial.vue"),
-      },{
+      }, {
         path: '/initModel',
         name: 'initModel',
         meta: { title: '认识模型和使用' },
         component: () => import("@/views/day3/initModel.vue"),
-      },{
+      }, {
         path: '/initCoordinate',
         name: 'initCoordinate',
         meta: { title: '世界坐标系和模型坐标系' },
@@ -148,5 +148,80 @@ export default [
     ]
   },
 
+  {
+    path: '/day4',
+    name: 'day4',
+    component: () => import("@/layout/index.vue"),
+    redirect: '/ambientLight',
+    meta: { title: 'day4光源' },
+    children: [
+      {
+        path: '/ambientLight',
+        name: 'ambientLight',
+        meta: { title: '环境光' },
+        component: () => import("@/views/day4/ambientLight.vue"),
+      },
+      {
+        path: '/pointLight',
+        name: 'pointLight',
+        meta: { title: '点光源' },
+        component: () => import("@/views/day4/pointLight.vue")
+      },
+      {
+        path: '/directionalLight',
+        name: 'directionalLight',
+        meta: { title: '平行光' },
+        component: () => import("@/views/day4/directionalLight.vue"),
+      },
+      {
+        path: '/spotLight',
+        name: 'spotLight',
+        meta: { title: '聚光灯' },
+        component: () => import("@/views/day4/spotLight.vue"),
+      }, {
+        path: '/lightShadow',
+        name: 'lightShadow',
+        meta: { title: '灯光与阴影' },
+        component: () => import("@/views/day4/lightShadow.vue"),
+      }
+
+    ]
+  },
+  {
+    path: '/day5',
+    name: 'day5',
+    component: () => import("@/layout/index.vue"),
+    redirect: '/initAnimation',
+    meta: { title: 'day5动画和物体' },
+    children: [
+      {
+        path: '/initAnimation',
+        name: 'initAnimation',
+        meta: { title: 'gsap动画库init' },
+        component: () => import("@/views/day5/initAnimation.vue"),
+      },
+      {
+        path: '/lightAnimation',
+        name: 'lightAnimation',
+        meta: { title: '让光源跟着做 动画' },
+
+        component: () => import("@/views/day5/lightAnimation.vue"),
+      },
+      {
+        path: '/create2d',
+        name: 'create2d',
+        meta: { title: 'CSS2D渲染器' },
+        component: () => import("@/views/day5/create2d.vue"),
+      },
+      {
+        path: '/createSprite',
+        name: 'createSprite',
+        meta: { title: 'threeks精灵物体' },
+        component: () => import("@/views/day5/createSprite.vue"),
+      },
+
+
+    ]
+  },
 
 ]

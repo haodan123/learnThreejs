@@ -19,7 +19,6 @@ let controls
 //调试工具
 let gui
 let cubeObj //立方体对象
-
 onUnmounted(() => {
   if (gui) {
     gui.domElement.remove() // 从 DOM 中移除 GUI 元素
@@ -33,61 +32,49 @@ onMounted(() => {
   renderer = obj.renderer
   controls = obj.controls
 
-  camera.position.z = 5
+  camera.position.set(5, 5, 5)
+  // 创建地板
+  createFloor()
   // 光源
   createLight()
-
-  // 世界坐标 和模型坐标
-  initCoordinate()
 
   resizeRender()
 })
 
-// 世界坐标 和模型坐标
-const initCoordinate = () => {
-  // 物体1：绿色立方体
-  const geometry = new THREE.BoxGeometry(1, 1, 1)
-  const material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00
-  })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.castShadow = true
-  scene.add(mesh)
-  gui = new GUI()
-
-  gui.add(mesh.position, 'x', 0, 3, 0.01).name('位移x')
-  gui.add(mesh.position, 'y', 0, 3, 0.01).name('位移y')
-  gui.add(mesh.position, 'z', 0, 3, 0.01).name('位移z')
-
-  gui.add(mesh.rotation, 'x', 0, 2 * Math.PI).name('旋转x')
-  gui.add(mesh.rotation, 'y', 0, 2 * Math.PI).name('旋转y')
-  gui.add(mesh.rotation, 'z', 0, 2 * Math.PI).name('旋转z')
-
-  gui.add(mesh.scale, 'x', 0, 3, 0.01).name('缩放x')
-  gui.add(mesh.scale, 'y', 0, 3, 0.01).name('缩放y')
-  gui.add(mesh.scale, 'z', 0, 3, 0.01).name('缩放z')
-
-  const helper = new THREE.AxesHelper(2)
-  // 某个物体上也可以加坐标系辅助对象
-  mesh.add(helper)
-}
-
 // 创建光源
 const createLight = () => {
   // 环境光：无方向，照亮场景中所有受光照影响的物体
+  // 注意1：没有方向，不能投射阴影，只能照亮物体，但是没有光斑
+  // 注意2：金属度 1，粗糙度 0，无环境贴图时，放射颜色为黑色，物体自身为黑色并不是灯光的问题
   const light = new THREE.AmbientLight(0xffffff, 1) // 柔和的白光
   scene.add(light)
 
   // 平行光：从一个方向发射过来平行光线
-  const directional = new THREE.DirectionalLight(0xffffff, 2) //颜色和光照强度
-  // 设置光的位置
-  directional.position.set(3, 3, 3)
-  // 添加到场景中
-  scene.add(directional)
-  // 平行光的辅助对象
-  // 参数1：平行光对象，参数2：模拟平行光光源的大小
-  const helper = new THREE.DirectionalLightHelper(directional, 1)
-  scene.add(helper)
+  // const directional = new THREE.DirectionalLight(0xffffff, 2) //颜色和光照强度
+  // // 设置光的位置
+  // directional.position.set(3, 3, 3)
+  // // 添加到场景中
+  // scene.add(directional)
+  // // 平行光的辅助对象
+  // // 参数1：平行光对象，参数2：模拟平行光光源的大小
+  // const helper = new THREE.DirectionalLightHelper(directional, 1)
+  // scene.add(helper)
+}
+
+const createFloor = () => {
+  const geometry = new THREE.PlaneGeometry(10, 10)
+  // 使用标准网格材质
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+    roughness: 1, // 粗糙度设置（0 光滑， 1 粗糙）
+    metalness: 0 // 金属度（光反射的光泽程度，1 是最高）
+  })
+  const plane = new THREE.Mesh(geometry, material)
+  // console.log(plane)
+  // plane.rotation.x = Math.PI
+  plane.rotation.x = -Math.PI / 2 //-的2分之π  就是旋转180度
+  scene.add(plane)
 }
 
 // 监听浏览器宽高

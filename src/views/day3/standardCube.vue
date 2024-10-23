@@ -4,7 +4,7 @@
 
 <script setup>
 import * as THREE from 'three'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,onUnmounted } from 'vue'
 // import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js' //css3d渲染器
 import { CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js' //css3d渲染器
 import { useThreeInit } from '@/composables'
@@ -17,7 +17,11 @@ let controls
 //调试工具
 let gui
 let cubeObj //立方体对象
-
+onUnmounted(() => {
+  if (gui) {
+    gui.domElement.remove() // 从 DOM 中移除 GUI 元素
+  }
+})
 onMounted(() => {
   const obj = useThreeInit(testBox.value)
   scene = obj.scene
